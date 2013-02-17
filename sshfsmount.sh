@@ -131,7 +131,7 @@ sshfsumount_all() {
 			sudo umount ${mountpoint}
 			# mount sshfs location
 			sshfsmount ${idmapuser} ${serveruser} ${server} ${serverdir} ${mountpoint}
-		fi
+			fi
 	done < ${basedir}/${sshfstab}
 }
 

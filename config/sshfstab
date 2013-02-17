@@ -19,23 +19,23 @@
 #===============================================================================
 #
 #    DESCRIPTION:
-#       sshfs mountpoints
+#      sshfs mountpoints
 #
-#		>>> Notes
-#       - One line for mountpoint
-#		- Parameters in each line separated by a semicolon (;)
-#       - Commented lines are ignored (#)
+#		   >>> Notes
+#      - One line for mountpoint
+#		   - Parameters in each line separated by a semicolon (;)
+#      - Commented lines are ignored (#)
 #
-#		>>> Configuration line
-#		- idmapuser: user/group ID mapping :: default: user (opcional)
-#		- serveruser: server username
-#		- server: server
-#		- serverdir: server directorie to mount
-#		- mountpoint: local mountpoint
+#	     >>> Configuration line
+#		   - idmapuser: user/group ID mapping :: default: user (opcional)
+#		   - serveruser: server username
+#	     - server: server
+#		   - serverdir: server directorie to mount
+#		   - mountpoint: local mountpoint
 #
-#		>>> Examples
-#		user;paulo;server3;/home/storage/Files;/home/user/ServerFiles
-#		;paulo;server3;/home/storage/Files;/home/user/ServerFiles
+# 		 >>> Examples
+#		   user;paulo;server3;/home/storage/Files;/home/user/ServerFiles
+#		   ;paulo;server3;/home/storage/Files;/home/user/ServerFiles
 #
 #===============================================================================
 #
