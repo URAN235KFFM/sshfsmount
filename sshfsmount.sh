@@ -38,7 +38,7 @@
 runningscript=`basename "$0"`
 basedir=`echo "$0" | awk -F"${runningscript}" '{ print $1 }'`
 if [[ "${basedir}" = "./" ]]; then
-	basedir=`pwd`
+  basedir=`pwd`
 fi
 configdir=${basedir}/config
 . ${configdir}/sshfsmount.conf
@@ -67,8 +67,8 @@ mountflag=$1
 #
 sshfsmount() {
 
-	# echo "sshfs -o idmap=${1} ${2}@${3}:${4} ${5}"
-	sshfs -o idmap=${1} ${2}@${3}:${4} ${5}
+  # echo "sshfs -o idmap=${1} ${2}@${3}:${4} ${5}"
+  sshfs -o idmap=${1} ${2}@${3}:${4} ${5}
 }
 
 # 
@@ -81,24 +81,24 @@ sshfsmount() {
 #
 sshfsmount_all() {
 
-	while read line; do
-		# ignore comments
-		if ! [[ "${line:0:1}" = "#" ]] ; then
+  while read line; do
+    # ignore comments
+    if ! [[ "${line:0:1}" = "#" ]] ; then
 
-			# get parameters
-			idmapuser=$(echo "$line" | cut -d';' -f1)
-			if [[ "${idmapuser}" = "" ]]; then
-				idmapuser=${idmapuserdefault}
-			fi
-			serveruser=$(echo "$line" | cut -d';' -f2)
-			server=$(echo "$line" | cut -d';' -f3)
-			serverdir=$(echo "$line" | cut -d';' -f4)
-			mountpoint=$(echo "$line" | cut -d';' -f5)
+      # get parameters
+      idmapuser=$(echo "$line" | cut -d';' -f1)
+      if [[ "${idmapuser}" = "" ]]; then
+        idmapuser=${idmapuserdefault}
+      fi
+      serveruser=$(echo "$line" | cut -d';' -f2)
+      server=$(echo "$line" | cut -d';' -f3)
+      serverdir=$(echo "$line" | cut -d';' -f4)
+      mountpoint=$(echo "$line" | cut -d';' -f5)
 
-			# mount sshfs location
-			sshfsmount "${idmapuser}" "${serveruser}" "${server}" "${serverdir}" "${mountpoint}"
-		fi
-	done < ${basedir}/${sshfstab}
+      # mount sshfs location
+      sshfsmount "${idmapuser}" "${serveruser}" "${server}" "${serverdir}" "${mountpoint}"
+    fi
+  done < ${basedir}/${sshfstab}
 }
 
 # 
@@ -111,28 +111,28 @@ sshfsmount_all() {
 #
 sshfsumount_all() {
 
-	while read line; do
-		# ignore comments
-		if ! [[ "${line:0:1}" = "#" ]] ; then
+  while read line; do
+    # ignore comments
+    if ! [[ "${line:0:1}" = "#" ]] ; then
 
-			# get parameters
-			idmapuser=$(echo "$line" | cut -d';' -f1)
-			if [[ "${idmapuser}" = "" ]]; then
-				idmapuser=${idmapuserdefault}
-			fi
-			serveruser=$(echo "$line" | cut -d';' -f2)
-			server=$(echo "$line" | cut -d';' -f3)
-			serverdir=$(echo "$line" | cut -d';' -f4)
-			mountpoint=$(echo "$line" | cut -d';' -f5)
+      # get parameters
+      idmapuser=$(echo "$line" | cut -d';' -f1)
+      if [[ "${idmapuser}" = "" ]]; then
+        idmapuser=${idmapuserdefault}
+      fi
+      serveruser=$(echo "$line" | cut -d';' -f2)
+      server=$(echo "$line" | cut -d';' -f3)
+      serverdir=$(echo "$line" | cut -d';' -f4)
+      mountpoint=$(echo "$line" | cut -d';' -f5)
 
-			# kills sshfs 
-			killall sshfs
-			# umounts sshfs locations
-			sudo umount ${mountpoint}
-			# mount sshfs location
-			sshfsmount ${idmapuser} ${serveruser} ${server} ${serverdir} ${mountpoint}
-			fi
-	done < ${basedir}/${sshfstab}
+      # kills sshfs 
+      killall sshfs
+      # umounts sshfs locations
+      sudo umount ${mountpoint}
+      # mount sshfs location
+      sshfsmount ${idmapuser} ${serveruser} ${server} ${serverdir} ${mountpoint}
+      fi
+  done < ${basedir}/${sshfstab}
 }
 
 
@@ -149,15 +149,15 @@ echo "mount flag: ${mountflag}" >> ${log}
 echo " " >> ${log}
 
 if [[ "${mountflag}" = "mount" ]]; then
-	# guarantee system is up and running before continuing
-	sleep 40
-	sshfsmount_all >> ${log}
+  # guarantee system is up and running before continuing
+  sleep 40
+  sshfsmount_all >> ${log}
 elif [[ "${mountflag}" = "re-mount" ]]; then
-	sshfsumount_all >> ${log}
-	sshfsmount_all >> ${log}
+  sshfsumount_all >> ${log}
+  sshfsmount_all >> ${log}
 else
-	echo "ERROR: ${runningscript}: Invalid flag. It should be mount or re-mount."
-	echo "Example: sshfsmount.sh mount"
+  echo "ERROR: ${runningscript}: Invalid flag. It should be mount or re-mount."
+  echo "Example: sshfsmount.sh mount"
 fi
 
 # remove older log files
