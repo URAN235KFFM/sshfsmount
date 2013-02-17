@@ -1,0 +1,50 @@
+#===============================================================================
+#
+#    Author: Paulo Pereira <sshfsmount@lofspot.net>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program in the file LICENSE.  If not, see 
+#    <http://www.gnu.org/licenses/>.
+#
+#===============================================================================
+#
+#    DESCRIPTION:
+#       sshfs mountpoints
+#
+#		>>> Notes
+#       - One line for mountpoint
+#		- Parameters in each line separated by a semicolon (;)
+#       - Commented lines are ignored (#)
+#
+#		>>> Configuration line
+#		- idmapuser: user/group ID mapping :: default: user (opcional)
+#		- serveruser: server username
+#		- server: server
+#		- serverdir: server directorie to mount
+#		- mountpoint: local mountpoint
+#
+#		>>> Examples
+#		user;paulo;server3;/home/storage/Files;/home/user/ServerFiles
+#		;paulo;server3;/home/storage/Files;/home/user/ServerFiles
+#
+#===============================================================================
+#
+#               >>>> CHANGE THIS FILE TO REFLECT YOUR SETUP <<<<
+#
+#===============================================================================
+#
+# idmapuser;serveruser;server;serverdir;mountpoint
+#
+# user;paulo;server3;/home/storage/Files;~/ServerFiles
+#
+#eof
