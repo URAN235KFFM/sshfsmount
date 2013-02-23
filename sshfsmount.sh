@@ -67,8 +67,12 @@ mountflag=$1
 #
 sshfsmount() {
 
-  # echo "sshfs -o idmap=${1} ${2}@${3}:${4} ${5}"
+  echo "# Mounting $5" >> ${log}
+  echo "sshfs -o idmap=${1} ${2}@${3}:${4} ${5}" >> ${log}
+
   sshfs -o idmap=${1} ${2}@${3}:${4} ${5}
+  echo "done" >> ${log}
+  echo " " >> ${log}
 }
 
 # 
@@ -125,10 +129,18 @@ sshfsumount_all() {
       serverdir=$(echo "$line" | cut -d';' -f4)
       mountpoint=$(echo "$line" | cut -d';' -f5)
 
-      # kills sshfs 
+      # kills sshfs
+      echo "# Killing sshfs" >> ${log}
       killall sshfs
+      echo "done" >> ${log}
+      echo " " >> ${log}
+
       # umounts sshfs locations
+      echo "# Umounting ${mountpoint}" >> ${log}
       sudo umount ${mountpoint}
+      echo "done" >> ${log}
+      echo " " >> ${log}
+      
       # mount sshfs location
       sshfsmount ${idmapuser} ${serveruser} ${server} ${serverdir} ${mountpoint}
     fi
@@ -143,29 +155,33 @@ sshfsumount_all() {
 initdate=`date "+%Y-%m-%d %H:%M:%S"`
 
 echo "#===============================================================================" > ${log}
-echo ">>> ${initdate}" >> ${log}
-echo " " >> ${log}
-echo "mount flag: ${mountflag}" >> ${log}
+echo "#" >> ${log}
+echo "#   ${initdate}" >> ${log}
+echo "#   mount flag: ${mountflag}" >> ${log}
 echo " " >> ${log}
 
 if [[ "${mountflag}" = "mount" ]]; then
   # guarantee system is up and running before continuing
   sleep ${sleepdefault}
-  sshfsmount_all >> ${log}
+  sshfsmount_all
 elif [[ "${mountflag}" = "re-mount" ]]; then
-  sshfsumount_all >> ${log}
-  sshfsmount_all >> ${log}
+  sshfsumount_all
+  sshfsmount_all
 else
   echo "ERROR: ${runningscript}: Invalid flag. It should be mount or re-mount."
   echo "Example: sshfsmount.sh mount"
 fi
 
 # remove older log files
+echo "# Removing older log files..." >> ${log}
 find ${basedir}/${logdir}/*.log -mtime +30 -exec rm {} \; >> ${log}
+echo "done" >> ${log}
+echo " " >> ${log}
 
 # end date
 enddate=`date "+%Y-%m-%d %H:%M:%S"`
 
-echo ">>> ${enddate}" >> ${log}
+echo " "
+echo "#   ${enddate}" >> ${log}
 
 #eof
