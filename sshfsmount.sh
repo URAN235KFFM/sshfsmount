@@ -150,7 +150,7 @@ echo " " >> ${log}
 
 if [[ "${mountflag}" = "mount" ]]; then
   # guarantee system is up and running before continuing
-  sleep 40
+  sleep ${sleepdefault}
   sshfsmount_all >> ${log}
 elif [[ "${mountflag}" = "re-mount" ]]; then
   sshfsumount_all >> ${log}
