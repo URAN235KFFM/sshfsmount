@@ -49,9 +49,68 @@ log=${basedir}/${logdir}/sshfsmount.`date "+%Y%m%d.%H%M%S"`.log
 # mount flag
 mountflag=$1
 
+# notify flag
+notify=0
+
 
 # === ~ === ~ === ~ === ~ === ~ === ~ === ~ === ~ === ~ === ~ ===
 # FUNCTIONS
+
+# 
+# libnotifyinstall()
+#
+# installs libnotify-bin
+#
+# Parameters:
+#   N/A
+#
+
+libnotifyinstall() {
+
+  checkubuntu=`cat /etc/lsb-release | head -n1 | awk -F"DISTRIB_ID=" '{ print $2 }'`
+
+  if [[ "${checkubuntu}" = "Ubuntu" ]]; then
+    if ! which notify-send > /dev/null; then
+      echo -e "  Do you want to install libnotify-bin? \b"
+      echo -e "  This allows desktop notifications. \b"
+      echo ""
+      echo -e "  If you choose to do this, the following will execute: \b"
+      echo ""
+      echo "      $ sudo apt-get install libnotify-bin"
+      echo ""
+      echo -e "  (y/n) \c"
+      read -n1 reply
+      if [[ "$reply" = "y" ]]; then
+        echo -e "  >>> Installing... \b"
+        echo ""
+        sudo apt-get install libnotify-bin
+        notify=1
+      fi
+    else
+      notify=1
+    fi
+  fi
+
+}
+
+# 
+# notify()
+#
+# desktop notifications
+#
+# Parameters:
+#   $1 - Notification text (first line)
+#   $2 - Notification text (second line)
+#
+
+notify() {
+
+  if [[ ${notify} -eq 1 ]]; then
+    notify-send "$1" \
+                "$2"
+  fi
+
+}
 
 # 
 # sshfsmount()
@@ -160,6 +219,11 @@ echo "#   ${initdate}" >> ${log}
 echo "#   mount flag: ${mountflag}" >> ${log}
 echo " " >> ${log}
 
+# offer to install libnotify-bin
+libnotifyinstall
+
+notify "sshfsmount: START" "Mount flag is ${mountflag}"
+
 if [[ "${mountflag}" = "mount" ]]; then
   # guarantee system is up and running before continuing
   sleep ${sleepdefault}
@@ -168,6 +232,7 @@ elif [[ "${mountflag}" = "re-mount" ]]; then
   sshfsumount_all
   sshfsmount_all
 else
+  notify "sshfsmount: ERROR invalid flag"
   echo "ERROR: ${runningscript}: Invalid flag. It should be mount or re-mount."
   echo "Example: sshfsmount.sh mount"
 fi
@@ -184,5 +249,7 @@ enddate=`date "+%Y-%m-%d %H:%M:%S"`
 
 echo " "
 echo "#   ${enddate}" >> ${log}
+
+notify "sshfsmount: END"
 
 #eof
