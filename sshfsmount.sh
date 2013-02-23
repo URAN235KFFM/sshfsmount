@@ -174,7 +174,8 @@ fi
 
 # remove older log files
 echo "# Removing older log files..." >> ${log}
-find ${basedir}/${logdir}/*.log -mtime +30 -exec rm {} \; >> ${log}
+echo "find ${basedir}/${logdir}/*.log -mtime +${purgedefault} -exec rm {} \;" >> ${log}
+find ${basedir}/${logdir}/*.log -mtime +${purgedefault} -exec rm {} \; >> ${log}
 echo "done" >> ${log}
 echo " " >> ${log}
 
